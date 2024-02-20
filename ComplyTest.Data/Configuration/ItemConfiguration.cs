@@ -11,7 +11,7 @@ public class ItemConfiguration : IEntityTypeConfiguration<Item>
         entity.ToTable("items");
         entity.HasKey(e => e.Id).HasName("id");
         entity.Property(e => e.Name).HasColumnName("name").HasMaxLength(500).IsRequired();
-        entity.Property(e => e.DateCreated).HasColumnName("date_created").ValueGeneratedOnAdd();
-        entity.Property(e => e.DateModified).HasColumnName("date_modified").ValueGeneratedOnUpdate();
+        entity.Property(e => e.DateCreated).HasColumnName("date_created");
+        entity.Property(e => e.DateModified).HasColumnName("date_modified");
     }
 }

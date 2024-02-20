@@ -20,6 +20,8 @@ public class ItemRepository : IItemRepository
     
     public async Task<Item> AddItem(Item item)
     {
+        item.DateCreated = DateTime.UtcNow;
+        
         await _persistence.Items.AddAsync(item);
         await _persistence.SaveChangesAsync();
         
@@ -34,7 +36,9 @@ public class ItemRepository : IItemRepository
         {
             await _persistence.Items
                 .Where(x => x.Id.Equals(id))
-                .ExecuteUpdateAsync(setters => setters.SetProperty(x => x.Name, item.Name));
+                .ExecuteUpdateAsync(setters => setters
+                    .SetProperty(x => x.Name, item.Name)
+                    .SetProperty(x => x.DateModified, DateTime.UtcNow));
 
             await transaction.CommitAsync();
         }
