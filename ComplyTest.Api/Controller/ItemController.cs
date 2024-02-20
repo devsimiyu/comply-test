@@ -18,7 +18,7 @@ public class ItemController : ControllerBase
         => _service = service;
 
     [HttpGet]
-    [ProducesResponseType<List<Item>>(StatusCodes.Status200OK, MediaTypeNames.Application.Json)]
+    [ProducesResponseType(typeof(List<Item>), StatusCodes.Status200OK, MediaTypeNames.Application.Json)]
     public ActionResult List()
     {
         var items = _service.GetItemList().ToList();
@@ -27,8 +27,8 @@ public class ItemController : ControllerBase
     }
 
     [HttpGet("{id}", Name = nameof(Details))]
-    [ProducesResponseType<Item>(StatusCodes.Status200OK, MediaTypeNames.Application.Json)]
-    [ProducesResponseType<string>(StatusCodes.Status404NotFound, MediaTypeNames.Text.Plain)]
+    [ProducesResponseType(typeof(Item), StatusCodes.Status200OK, MediaTypeNames.Application.Json)]
+    [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound, MediaTypeNames.Text.Plain)]
     public async Task<ActionResult> Details([FromRoute] Guid id)
     {
         var item = await _service.GetItemDetails(id);
@@ -38,8 +38,8 @@ public class ItemController : ControllerBase
 
     [HttpPost]
     [Consumes(MediaTypeNames.Application.Json)]
-    [ProducesResponseType<Item>(StatusCodes.Status201Created, MediaTypeNames.Application.Json)]
-    [ProducesResponseType<ValidationProblem>(StatusCodes.Status400BadRequest, MediaTypeNames.Application.Json)]
+    [ProducesResponseType(typeof(Item), StatusCodes.Status201Created, MediaTypeNames.Application.Json)]
+    [ProducesResponseType(typeof(ValidationProblem), StatusCodes.Status400BadRequest, MediaTypeNames.Application.Json)]
     public async Task<ActionResult> Create([FromBody] ItemDto dto)
     {
         if (!ModelState.IsValid)
@@ -54,18 +54,18 @@ public class ItemController : ControllerBase
     
     [HttpPut("{id}")]
     [Consumes(MediaTypeNames.Application.Json)]
-    [ProducesResponseType<Item>(StatusCodes.Status204NoContent)]
-    [ProducesResponseType<string>(StatusCodes.Status404NotFound, MediaTypeNames.Text.Plain)]
-    [ProducesResponseType<ValidationProblem>(StatusCodes.Status400BadRequest, MediaTypeNames.Application.Json)]
+    [ProducesResponseType(typeof(Item), StatusCodes.Status204NoContent)]
+    [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound, MediaTypeNames.Text.Plain)]
+    [ProducesResponseType(typeof(ValidationProblem), StatusCodes.Status400BadRequest, MediaTypeNames.Application.Json)]
     public async Task<ActionResult> Update([FromRoute] [Exists] Guid id, [FromBody] ItemDto dto)
     {
+        if (ModelState["id"]!.ValidationState != ModelValidationState.Valid)
+        {
+            return NotFound($"{nameof(Item)} not found for update");
+        }
         if (!ModelState.IsValid)
         {
-            var exists = ModelState["id"]!;
-
-            return exists.ValidationState != ModelValidationState.Valid
-                ? NotFound($"{nameof(Item)} not found for update")
-                : ValidationProblem(ModelState);
+            return ValidationProblem(ModelState);
         }
 
         await _service.UpdateItem(id, dto.ToEntity());
@@ -74,13 +74,11 @@ public class ItemController : ControllerBase
     }
     
     [HttpDelete("{id}")]
-    [ProducesResponseType<Item>(StatusCodes.Status204NoContent)]
-    [ProducesResponseType<string>(StatusCodes.Status404NotFound, MediaTypeNames.Text.Plain)]
+    [ProducesResponseType(typeof(Item), StatusCodes.Status204NoContent)]
+    [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound, MediaTypeNames.Text.Plain)]
     public async Task<ActionResult> Delete([FromRoute] [Exists] Guid id)
     {
-        var exists = ModelState["id"]!;
-
-        if (exists.ValidationState != ModelValidationState.Valid)
+        if (ModelState["id"]!.ValidationState != ModelValidationState.Valid)
         {
             return NotFound($"{nameof(Item)} not found for delete");
         }
