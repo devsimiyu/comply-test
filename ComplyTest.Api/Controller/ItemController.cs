@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc.ModelBinding;
 namespace ComplyTest.Api.Controller;
 
 [ApiController]
-[Route("api/[controller]")]
+[Route("api/item")]
 public class ItemController : ControllerBase
 {
     private readonly IItemService _service;
