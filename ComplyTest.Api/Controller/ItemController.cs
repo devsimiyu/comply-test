@@ -15,9 +15,9 @@ namespace ComplyTest.Api.Controller;
 public class ItemController : ControllerBase
 {
     private readonly IItemService _service;
-    private readonly IMemoryCache _cache;
+    private readonly MemoryCache _cache;
 
-    public ItemController(IItemService service, IMemoryCache cache)
+    public ItemController(IItemService service, MemoryCache cache)
     {
         _service = service;
         _cache = cache;
@@ -61,7 +61,7 @@ public class ItemController : ControllerBase
         {
             item.Factorial = _cache.GetOrCreate(item.Id, options =>
             {
-                options.Priority = CacheItemPriority.NeverRemove;
+                options.Priority = CacheItemPriority.Normal;
                 options.Size = 1;
 
                 return _service.CalculateFactorial(item.Row);
@@ -131,6 +131,7 @@ public class ItemController : ControllerBase
         }
 
         await _service.DeleteItem(id);
+        _cache.Clear();
 
         return NoContent();
     }

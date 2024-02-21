@@ -25,7 +25,7 @@ builder.Services.AddCors(options =>
             .AllowAnyHeader();
     });
 });
-builder.Services.AddSingleton<IMemoryCache>(new MemoryCache(new MemoryCacheOptions
+builder.Services.AddSingleton(new MemoryCache(new MemoryCacheOptions
 {
     SizeLimit = 256
 }));
