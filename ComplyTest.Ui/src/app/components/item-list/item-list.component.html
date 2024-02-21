@@ -1,15 +1,21 @@
-<h1>Item List</h1>
-<p>View and manage your items</p>
-<button
-    [disabled]="isCalculatingFactorial"
-    (click)="factorial()">
-    @if (isCalculatingFactorial) {
-        Calculating...
-    }
-    @else {
-        Calculate factorials
-    }
-</button>
+<section class="heading" role="heading">
+    <div class="titles">
+        <h1>Item List</h1>
+        <p>View and manage your items</p>
+    </div>
+    <div class="actions">
+        <button
+            [disabled]="isCalculatingFactorial"
+            (click)="factorial()">
+            @if (isCalculatingFactorial) {
+                Calculating...
+            }
+            @else {
+                Calculate factorials
+            }
+        </button>
+    </div>
+</section>
 <ng-container *ngIf="{
     items: items$ | async,
     error: error$ | async,
@@ -23,7 +29,6 @@
                 <tr>
                     <th>Name</th>
                     <th>Date Created</th>
-                    <th>Date Modified</th>
                     <th>Factorial</th>
                     <th>Actions</th>
                 </tr>
@@ -38,14 +43,16 @@
                             {{ item.dateCreated | date:'mediumDate' }}
                         </td>
                         <td>
-                            {{ item.dateModified | date:'mediumDate' }}
-                        </td>
-                        <td>
                             {{ item.factorial }}
                         </td>
                         <td>
                             <a [routerLink]="[item.id, 'edit']">Edit</a>
-                            <button (click)="delete(item.id)">Delete</button>
+                            <a 
+                                role="button" 
+                                href="javascript:void()" 
+                                (click)="delete(item.id)">
+                                Delete
+                            </a>
                         </td>
                     </tr>
                 }

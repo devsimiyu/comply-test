@@ -1,21 +1,28 @@
-<h1>Item Form</h1>
-<p>Provide item title and submit</p>
-<form [formGroup]="form">
-    <div class="flex">
-        <input 
-            formControlName="name" 
-            type="text" 
-            placeholder="Enter item title"
-            [readonly]="isSubmitting">
-        <button 
-            [disabled]="isSubmitting"
-            (click)="submit()">
-            Submit
-        </button>
+<section class="heading" role="heading">
+    <div class="titles">
+        <h1>Item Form</h1>
+        <p>Provide item title and submit</p>
     </div>
-    @if (hasError('name', 'required')) {
-        <small class="field-error">
-            Name is required
-        </small>
-    }
+</section>
+<form [formGroup]="form">
+    <input 
+        formControlName="name" 
+        type="text" 
+        [placeholder]="isLoading ? 'Loading item title...' : 'Enter item title'"
+        [readonly]="isLoading || isSubmitting">
+    <button 
+        [disabled]="isSubmitting"
+        (click)="submit()">
+        @if (isSubmitting) {
+            Submitting...
+        }
+        @else {
+            Submit
+        }
+    </button>
 </form>
+<small 
+    [style.visibility]="hasError('name', 'required') ? 'visible' : 'hidden'"
+    class="field-error">
+    Name is required
+</small>

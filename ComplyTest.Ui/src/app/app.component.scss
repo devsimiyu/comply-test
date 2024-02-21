@@ -1,0 +1,18 @@
+::ng-deep {
+
+    body {
+        margin: 1rem 30vh;
+    }
+}
+
+nav {
+    ul {
+        display: flex;
+        gap: 15px;
+        padding: 1rem 0 3rem;
+
+        li {
+            list-style: none;
+        }
+    }
+}
