@@ -25,7 +25,7 @@ Once the EF Core tools is installed, proceed to apply any pending migrations by 
 To run the API, execute this command: `dotnet run --project ComplyTest.Api --launch-profile http`
 
 ## UI
-The frontend can be started by this command: `npm start`
+The frontend can be run by first installing packages with `npm i`, then start server with: `npm start` command
 
 ## Integration Tests
 The API integration tests can be executed by this command `dotnet test ComplyTest.IntegrationTests`
