@@ -46,15 +46,18 @@ app.UseCors();
 app.MapControllers();
 
 // Apply pending database migrations
-using (var scope = app.Services.CreateScope())
-{
-    var persistenceContext = scope.ServiceProvider.GetRequiredService<PersistenceContext>();
+// using (var scope = app.Services.CreateScope())
+// {
+//     var persistenceContext = scope.ServiceProvider.GetRequiredService<PersistenceContext>();
 
-    if (persistenceContext.Database.GetPendingMigrations().Any())
-    {
-        persistenceContext.Database.Migrate();
-    }
-}
+//     if (persistenceContext.Database.GetPendingMigrations().Any())
+//     {
+//         persistenceContext.Database.Migrate();
+//     }
+// }
 
 // Start the application
 app.Run();
+
+// Make Program class visible
+public partial class Program { }

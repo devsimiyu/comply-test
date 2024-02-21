@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ComplyTest.Core", "ComplyTe
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ComplyTest.Service", "ComplyTest.Service\ComplyTest.Service.csproj", "{CEDE8976-F155-4317-A0CD-D3FC9D0619A4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ComplyTest.IntegrationTests", "ComplyTest.IntegrationTests\ComplyTest.IntegrationTests.csproj", "{4E7DF85F-B0D5-4774-A396-E4186CDAD0ED}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -36,5 +38,9 @@ Global
 		{CEDE8976-F155-4317-A0CD-D3FC9D0619A4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CEDE8976-F155-4317-A0CD-D3FC9D0619A4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CEDE8976-F155-4317-A0CD-D3FC9D0619A4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4E7DF85F-B0D5-4774-A396-E4186CDAD0ED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4E7DF85F-B0D5-4774-A396-E4186CDAD0ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4E7DF85F-B0D5-4774-A396-E4186CDAD0ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4E7DF85F-B0D5-4774-A396-E4186CDAD0ED}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
