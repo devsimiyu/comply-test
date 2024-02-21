@@ -1,0 +1,21 @@
+<h1>Item Form</h1>
+<p>Provide item title and submit</p>
+<form [formGroup]="form">
+    <div class="flex">
+        <input 
+            formControlName="name" 
+            type="text" 
+            placeholder="Enter item title"
+            [readonly]="isSubmitting">
+        <button 
+            [disabled]="isSubmitting"
+            (click)="submit()">
+            Submit
+        </button>
+    </div>
+    @if (hasError('name', 'required')) {
+        <small class="field-error">
+            Name is required
+        </small>
+    }
+</form>
