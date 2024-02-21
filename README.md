@@ -18,7 +18,7 @@ This project contains the following folders:
 - `Frontend`: The front is built using `Angular v17`
 
 ## Database
-The EF Core tools is needed to create a database and run migrations. Runs this command to install the EF core tools: `dotnet tool install --global dotnet-ef`. 
+The EF Core tools is needed to create a database and run migrations. Runs this command to install the EF core tools `dotnet tool install --global dotnet-ef`. 
 Once the EF Core tools is installed, proceed to apply any pending migrations by executing this command `dotnet ef database --project ComplyTest.Data update -- --Database "Data Source=..\\ComplyTest.db"`
 
 ## API
@@ -26,3 +26,6 @@ To run the API, execute this command: `dotnet run --project ComplyTest.Api --lau
 
 ## UI
 The frontend can be started by this command: `npm start`
+
+## Integration Tests
+The API integration tests can be executed by this command `dotnet test ComplyTest.IntegrationTests`
