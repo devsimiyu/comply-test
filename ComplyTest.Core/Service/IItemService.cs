@@ -9,5 +9,5 @@ public interface IItemService
     Task<Item> AddItem(Item item);
     Task UpdateItem(Guid id, Item item);
     Task DeleteItem(Guid id);
-    Task CalculateFactorial(Stream stream);
+    int CalculateFactorial(int number);
 }

@@ -3,6 +3,7 @@ using ComplyTest.Data.Repository;
 using ComplyTest.Service;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Metadata;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Memory;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -24,6 +25,10 @@ builder.Services.AddCors(options =>
             .AllowAnyHeader();
     });
 });
+builder.Services.AddSingleton<IMemoryCache>(new MemoryCache(new MemoryCacheOptions
+{
+    SizeLimit = 256
+}));
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 

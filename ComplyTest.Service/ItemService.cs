@@ -1,3 +1,5 @@
+using System.Text;
+using System.Text.Json;
 using ComplyTest.Core.Entity;
 using ComplyTest.Core.Repository;
 using ComplyTest.Core.Service;
@@ -26,8 +28,12 @@ public class ItemService : IItemService
     public async Task DeleteItem(Guid id)
         => await _repository.DeleteItem(id);
 
-    public Task CalculateFactorial(Stream stream)
+    public int CalculateFactorial(int number)
     {
-        throw new NotImplementedException();
+        var factorial = Enumerable
+            .Range(1, number)
+            .Aggregate(1, (factorial, number) => factorial * number);
+
+        return factorial;
     }
 }

@@ -16,7 +16,9 @@ export class ItemListComponent implements OnDestroy {
   );
   subscriptions = new Subscription();
 
-  constructor(private service: ItemListService) { }
+  constructor(private service: ItemListService) {
+    service.factorial().subscribe();
+  }
 
   ngOnDestroy(): void {
     this.subscriptions.unsubscribe();

@@ -1,3 +1,4 @@
+using System.Collections.Concurrent;
 using System.Net.Mime;
 using ComplyTest.Api.Model;
 using ComplyTest.Core.Entity;
@@ -5,6 +6,7 @@ using ComplyTest.Core.Service;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace ComplyTest.Api.Controller;
 
@@ -13,9 +15,13 @@ namespace ComplyTest.Api.Controller;
 public class ItemController : ControllerBase
 {
     private readonly IItemService _service;
+    private readonly IMemoryCache _cache;
 
-    public ItemController(IItemService service)
-        => _service = service;
+    public ItemController(IItemService service, IMemoryCache cache)
+    {
+        _service = service;
+        _cache = cache;
+    }
 
     [HttpGet]
     [ProducesResponseType(typeof(List<Item>), StatusCodes.Status200OK, MediaTypeNames.Application.Json)]
@@ -24,6 +30,39 @@ public class ItemController : ControllerBase
         var items = _service.GetItemList().ToList();
 
         return Ok(items);
+    }
+
+    [HttpGet("factorial")]
+    [ProducesResponseType(typeof(object), StatusCodes.Status200OK, MediaTypeNames.Application.Json)]
+    public ConcurrentBag<object> Factorial()
+    {
+        var items = _service.GetItemList().Select((item, index) => new ItemFactorialDto
+            {   
+                Id = item.Id,
+                Name =item.Name,
+                Row = index + 1,
+            });
+        var results = new ConcurrentBag<object>();
+        var tasks = items
+            .AsParallel()
+            .AsUnordered()
+            .WithExecutionMode(ParallelExecutionMode.ForceParallelism)
+            .WithDegreeOfParallelism(items.Count());
+
+        tasks.ForAll(item =>
+        {
+            item.Factorial = _cache.GetOrCreate(item.Id, options =>
+            {
+                options.Priority = CacheItemPriority.NeverRemove;
+                options.Size = 1;
+
+                return _service.CalculateFactorial(item.Row);
+            });
+
+            results.Add(item);
+        });
+
+        return results;
     }
 
     [HttpGet("{id}", Name = nameof(Details))]

@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, tap } from 'rxjs';
 import { environment } from '../../../environments/environment';
 
 export interface Item {
@@ -24,5 +24,10 @@ export class ItemListService {
   delete(id: string): Observable<void> {
     const url = environment.API + id;
     return this.http.delete<void>(url);
+  }
+
+  factorial(): Observable<Item> {
+    const url = environment.API + 'factorial';
+    return this.http.get<Item>(url).pipe(tap(console.log));
   }
 }
