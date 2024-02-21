@@ -4,7 +4,7 @@ using ComplyTest.Core.Entity;
 
 namespace ComplyTest.Api.Model;
 
-public record ItemDto
+public record ItemSaveDto
 {
     [JsonPropertyName("name")]
     [Required]

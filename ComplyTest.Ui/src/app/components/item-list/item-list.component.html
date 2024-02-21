@@ -1,5 +1,15 @@
 <h1>Item List</h1>
 <p>View and manage your items</p>
+<button
+    [disabled]="isCalculatingFactorial"
+    (click)="factorial()">
+    @if (isCalculatingFactorial) {
+        Calculating...
+    }
+    @else {
+        Calculate factorials
+    }
+</button>
 <ng-container *ngIf="{
     items: items$ | async,
     error: error$ | async,

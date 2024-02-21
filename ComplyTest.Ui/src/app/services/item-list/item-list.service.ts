@@ -26,8 +26,8 @@ export class ItemListService {
     return this.http.delete<void>(url);
   }
 
-  factorial(): Observable<Item> {
+  factorial(): Observable<Array<Item>> {
     const url = environment.API + 'factorial';
-    return this.http.get<Item>(url).pipe(tap(console.log));
+    return this.http.get<Array<Item>>(url);
   }
 }

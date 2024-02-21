@@ -1,5 +1,5 @@
 import { Component, OnDestroy } from '@angular/core';
-import { Subscription, catchError, ignoreElements, of, shareReplay } from 'rxjs';
+import { Subscription, catchError, finalize, ignoreElements, map, of, shareReplay } from 'rxjs';
 import { ItemListService } from '../../services/item-list/item-list.service';
 
 @Component({
@@ -15,10 +15,9 @@ export class ItemListComponent implements OnDestroy {
     catchError(() => of('Oops! Failed to load item list!'))
   );
   subscriptions = new Subscription();
+  isCalculatingFactorial = false;
 
-  constructor(private service: ItemListService) {
-    service.factorial().subscribe();
-  }
+  constructor(private service: ItemListService) { }
 
   ngOnDestroy(): void {
     this.subscriptions.unsubscribe();
@@ -32,5 +31,12 @@ export class ItemListComponent implements OnDestroy {
           error: () => alert('Oops! Failed to delete item!')
         }));
     }
+  }
+
+  factorial(): void {
+    this.isCalculatingFactorial = true;
+    this.items$ = this.service.factorial()
+      .pipe(finalize(() => this.isCalculatingFactorial = false))
+      .pipe(shareReplay(1));
   }
 }

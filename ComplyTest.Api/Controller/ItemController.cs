@@ -27,22 +27,30 @@ public class ItemController : ControllerBase
     [ProducesResponseType(typeof(List<Item>), StatusCodes.Status200OK, MediaTypeNames.Application.Json)]
     public ActionResult List()
     {
-        var items = _service.GetItemList().ToList();
+        var items = _service.GetItemList().ToList().Select(item => new ItemDetailsDto
+            {
+                Id = item.Id,
+                Name = item.Name,
+                DateCreated = item.DateCreated,
+                DateModified = item.DateModified,
+            });
 
         return Ok(items);
     }
 
     [HttpGet("factorial")]
     [ProducesResponseType(typeof(object), StatusCodes.Status200OK, MediaTypeNames.Application.Json)]
-    public ConcurrentBag<object> Factorial()
+    public IEnumerable<ItemDetailsDto> Factorial()
     {
-        var items = _service.GetItemList().Select((item, index) => new ItemFactorialDto
+        var items = _service.GetItemList().Select((item, index) => new ItemDetailsDto
             {   
                 Id = item.Id,
                 Name =item.Name,
+                DateCreated = item.DateCreated,
+                DateModified = item.DateModified,
                 Row = index + 1,
             });
-        var results = new ConcurrentBag<object>();
+        var results = new ConcurrentBag<ItemDetailsDto>();
         var tasks = items
             .AsParallel()
             .AsUnordered()
@@ -62,7 +70,7 @@ public class ItemController : ControllerBase
             results.Add(item);
         });
 
-        return results;
+        return results.OrderBy(item => item.Row);
     }
 
     [HttpGet("{id}", Name = nameof(Details))]
@@ -79,7 +87,7 @@ public class ItemController : ControllerBase
     [Consumes(MediaTypeNames.Application.Json)]
     [ProducesResponseType(typeof(Item), StatusCodes.Status201Created, MediaTypeNames.Application.Json)]
     [ProducesResponseType(typeof(ValidationProblem), StatusCodes.Status400BadRequest, MediaTypeNames.Application.Json)]
-    public async Task<ActionResult> Create([FromBody] ItemDto dto)
+    public async Task<ActionResult> Create([FromBody] ItemSaveDto dto)
     {
         if (!ModelState.IsValid)
         {
@@ -96,7 +104,7 @@ public class ItemController : ControllerBase
     [ProducesResponseType(typeof(Item), StatusCodes.Status204NoContent)]
     [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound, MediaTypeNames.Text.Plain)]
     [ProducesResponseType(typeof(ValidationProblem), StatusCodes.Status400BadRequest, MediaTypeNames.Application.Json)]
-    public async Task<ActionResult> Update([FromRoute] [Exists] Guid id, [FromBody] ItemDto dto)
+    public async Task<ActionResult> Update([FromRoute] [Exists] Guid id, [FromBody] ItemSaveDto dto)
     {
         if (ModelState["id"]!.ValidationState != ModelValidationState.Valid)
         {
