@@ -1,8 +1,8 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Item, ItemFormService } from '../../services/item-form/item-form.service';
-import { Subscription, finalize } from 'rxjs';
-import { ActivatedRoute } from '@angular/router';
+import { Subscription, finalize, tap } from 'rxjs';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-item-form',
@@ -16,9 +16,14 @@ export class ItemFormComponent implements OnInit, OnDestroy {
   });
   isLoading = false;
   isSubmitting = false;
+  isDeleting = false;
   subscriptions = new Subscription();
 
-  constructor(private route: ActivatedRoute, private service: ItemFormService) { }
+  constructor(
+    public route: ActivatedRoute, 
+    private router: Router,
+    private service: ItemFormService
+  ) { }
 
   ngOnInit(): void {
     this.load();
@@ -70,5 +75,17 @@ export class ItemFormComponent implements OnInit, OnDestroy {
         next: () => alert('Item updated successfully!'),
         error: () => alert('Oops! Failed to update item!'),
       }));
+  }
+
+  delete(): void {
+    if (confirm('Are you sure to delete item?')) {
+      const id = this.route.snapshot.params['id'];
+      this.subscriptions.add(this.service.delete(id)
+        .pipe(tap(() => this.router.navigateByUrl('/')))
+        .subscribe({
+          next: () => alert('Item deleted successfully!'),
+          error: () => alert('Oops! Failed to delete item!')
+        }));
+    }
   }
 }

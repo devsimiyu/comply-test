@@ -23,16 +23,6 @@ export class ItemListComponent implements OnDestroy {
     this.subscriptions.unsubscribe();
   }
 
-  delete(id: string): void {
-    if (confirm('Are you sure to delete item?')) {
-      this.subscriptions.add(this.service.delete(id)
-        .subscribe({
-          next: () => alert('Item deleted successfully!'),
-          error: () => alert('Oops! Failed to delete item!')
-        }));
-    }
-  }
-
   factorial(): void {
     this.isCalculatingFactorial = true;
     this.items$ = this.service.factorial()

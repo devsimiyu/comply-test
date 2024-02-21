@@ -26,4 +26,9 @@ export class ItemFormService {
     const url = environment.API + id;
     return this.http.get<Item>(url);
   }
+
+  delete(id: string): Observable<void> {
+    const url = environment.API + id;
+    return this.http.delete<void>(url);
+  }
 }

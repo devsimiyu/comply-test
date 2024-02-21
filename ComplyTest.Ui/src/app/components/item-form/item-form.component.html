@@ -3,6 +3,16 @@
         <h1>Item Form</h1>
         <p>Provide item title and submit</p>
     </div>
+    <div class="actions" style="text-align: right;">
+        @if (route.snapshot.paramMap.has('id')) {
+            <a 
+                role="button" 
+                href="javascript:void()"
+                (click)="delete()">
+                Delete item
+            </a>
+        }
+    </div>
 </section>
 <form [formGroup]="form">
     <input 
